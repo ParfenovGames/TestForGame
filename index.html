@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Какой ты? Тест на 5 минут</title>
-<meta name="description" content="25 коротких вопросов о характере. Около 5 минут.">
+<meta name="description" content="30 коротких вопросов о характере. Около 4 минут.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -186,7 +186,7 @@
   .final dt { color: var(--muted); }
   .final dd { margin: 0; }
   .bars { display: grid; gap: 4px; margin-top: 14px; }
-  .bar { display: grid; grid-template-columns: 112px 1fr 34px; align-items: center; gap: 8px; font-size: 14px; }
+  .bar { display: grid; grid-template-columns: 112px 1fr 44px; align-items: center; gap: 8px; font-size: 14px; }
   .bar .track { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
   .bar .fill { height: 100%; background: var(--muted); }
   .bar.top .fill { background: var(--accent); }
@@ -203,7 +203,7 @@
 <script>
 "use strict";
 
-const VERSION = "v0.1";
+const VERSION = "v0.2";
 
 // Домены: код, название для игрока, норма (доля от максимума), описание.
 const TYPES = {
@@ -246,7 +246,12 @@ const QUESTIONS = [
   { id: "НА5", d: "na", r: true, t: "Меня трудно выбить из колеи." },
   { id: "ОТ3", d: "ot", t: "Мне комфортнее одному, чем с людьми." },
   { id: "ДС4", d: "ds", r: true, t: "Когда у кого-то беда, мне по-настоящему не всё равно." },
-  { id: "РС2", d: "rs", t: "Я легко бросаю дело, если оно стало скучным." }
+  { id: "РС2", d: "rs", t: "Я легко бросаю дело, если оно стало скучным." },
+  { id: "НА6", d: "na", r: true, t: "Я редко волнуюсь о том, что обо мне думают другие." },
+  { id: "ОТ6", d: "ot", r: true, t: "Меня часто радуют простые вещи." },
+  { id: "ДС6", d: "ds", r: true, t: "Я не считаю себя лучше других." },
+  { id: "РС6", d: "rs", r: true, t: "Прежде чем потратить крупную сумму, я долго думаю." },
+  { id: "АН6", d: "an", r: true, t: "Я спокойно отдаю дела другим, даже если они сделают по-своему." }
 ];
 
 // Ответы: значение — «да» = 3 ... «нет» = 0.
@@ -283,6 +288,9 @@ const STORY_QS = [
 
 const LETTERS = ["А", "Б", "В", "Г", "Д"];
 
+// Максимальный балл домена: 6 вопросов × 3.
+const MAX = QUESTIONS.filter(q => q.d === "na").length * 3;
+
 // Состояние
 const S = {
   answers: new Array(QUESTIONS.length).fill(null),
@@ -315,7 +323,7 @@ function score() {
     const v = S.answers[i];
     sums[q.d] += q.r ? 3 - v : v;
   });
-  const dev = TYPE_ORDER.map(d => ({ d, sum: sums[d], dev: sums[d] / 15 - TYPES[d].norm }))
+  const dev = TYPE_ORDER.map(d => ({ d, sum: sums[d], dev: sums[d] / MAX - TYPES[d].norm }))
     .sort((a, b) => b.dev - a.dev);
   return { sums, ranked: dev, borderline: dev[0].dev - dev[1].dev < 0.03 };
 }
@@ -329,9 +337,9 @@ function fmtTime(s) {
 
 function intro() {
   app.innerHTML = `
-    <p class="tag"><span>Тест ${VERSION}</span><span>≈ 5 минут</span></p>
+    <p class="tag"><span>Тест ${VERSION}</span><span>≈ 4 минуты</span></p>
     <h1>Какой ты?</h1>
-    <p>25 коротких утверждений о характере. На каждое — «да», «скорее да», «скорее нет» или «нет».</p>
+    <p>30 коротких утверждений о характере. На каждое — «да», «скорее да», «скорее нет» или «нет».</p>
     <p>Отвечай честно и не думай долго: первый ответ обычно самый точный. Правильных и неправильных ответов нет.</p>
     <p class="muted small">Время прохождения засекается. Ответы никуда не отправляются и не сохраняются: в конце будет экран, который нужно заскринить и прислать.</p>
     <button class="btn" id="go">Начать</button>`;
@@ -476,8 +484,8 @@ function final() {
       ${TYPE_ORDER.map(d => `
         <div class="bar${d === top ? " top" : ""}">
           <span>${TYPES[d].short}</span>
-          <span class="track"><span class="fill" style="display:block;width:${(r.sums[d] / 15) * 100}%"></span></span>
-          <span class="num">${r.sums[d]}</span>
+          <span class="track"><span class="fill" style="display:block;width:${(r.sums[d] / MAX) * 100}%"></span></span>
+          <span class="num">${r.sums[d]}/${MAX}</span>
         </div>`).join("")}
     </div>
     <p class="code">${VERSION} · ${code}</p>
