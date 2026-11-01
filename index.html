@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Какой ты? Тест на 5 минут</title>
+<meta name="description" content="25 коротких вопросов о характере. Около 5 минут.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #efebe3;
+    --paper: #faf8f3;
+    --ink: #1f1d1a;
+    --muted: #6d675d;
+    --line: #d8d1c4;
+    --accent: #9b2c20;
+    --accent-soft: #f3e1dc;
+    --chosen: #1f1d1a;
+    --chosen-ink: #faf8f3;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #151413;
+      --paper: #1e1c1a;
+      --ink: #ece7de;
+      --muted: #9a9286;
+      --line: #36322d;
+      --accent: #e0705f;
+      --accent-soft: #3a2420;
+      --chosen: #ece7de;
+      --chosen-ink: #1e1c1a;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "PT Serif", Georgia, serif;
+    font-size: 18px;
+    line-height: 1.5;
+    min-height: 100vh;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .wrap {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 24px 16px 40px;
+  }
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 28px 22px;
+    box-shadow: 0 1px 0 var(--line), 0 10px 30px -18px rgba(0,0,0,.35);
+  }
+  .tag {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 14px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  h1 { font-size: 30px; line-height: 1.15; margin: 0 0 16px; }
+  h2 { font-size: 22px; line-height: 1.3; margin: 0 0 18px; }
+  p { margin: 0 0 14px; }
+  .muted { color: var(--muted); }
+  .small { font-size: 15px; }
+  .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+
+  button {
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 14px 18px;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 3px;
+    font-size: 18px;
+    margin-top: 18px;
+  }
+  .btn:disabled { opacity: .35; cursor: default; }
+  .btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  .link {
+    background: none;
+    border: 0;
+    padding: 8px 0;
+    color: var(--muted);
+    font-size: 15px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .progress {
+    height: 3px;
+    background: var(--line);
+    margin: 0 0 22px;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress > div { height: 100%; background: var(--accent); transition: width .2s; }
+
+  .question { font-size: 23px; line-height: 1.35; margin: 0 0 24px; min-height: 3.6em; }
+  .options { display: grid; gap: 10px; }
+  .opt {
+    text-align: left;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    background: transparent;
+    border-radius: 3px;
+    font-size: 18px;
+    transition: background .1s, border-color .1s;
+  }
+  .opt:hover { border-color: var(--muted); }
+  .opt.sel { background: var(--chosen); color: var(--chosen-ink); border-color: var(--chosen); }
+  .row { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
+
+  .desc {
+    position: relative;
+    text-align: left;
+    width: 100%;
+    padding: 16px 16px 16px 52px;
+    border: 1px solid var(--line);
+    background: transparent;
+    border-radius: 3px;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  .desc .letter {
+    position: absolute;
+    left: 14px; top: 14px;
+    width: 26px; height: 26px;
+    border: 1px solid var(--muted);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px;
+  }
+  .desc.first, .desc.second { border-color: var(--accent); background: var(--accent-soft); }
+  .desc .badge {
+    position: absolute; right: 10px; top: -10px;
+    background: var(--accent); color: #fff;
+    font-family: "IBM Plex Mono", monospace; font-size: 12px;
+    padding: 2px 8px; border-radius: 10px;
+  }
+  .hint {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px;
+    color: var(--accent);
+    margin: 0 0 14px;
+  }
+
+  .scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .scale .opt { text-align: center; padding: 14px 0; font-family: "IBM Plex Mono", monospace; }
+  .scale-labels { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+  .stamp {
+    display: inline-block;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    transform: rotate(-2deg);
+    margin-bottom: 14px;
+  }
+
+  /* Итоговый экран: всё должно влезть на экран телефона */
+  .final { padding: 20px 18px; }
+  .final h1 { font-size: 26px; margin-bottom: 4px; }
+  .final dl { margin: 14px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; font-size: 15px; }
+  .final dt { color: var(--muted); }
+  .final dd { margin: 0; }
+  .bars { display: grid; gap: 4px; margin-top: 14px; }
+  .bar { display: grid; grid-template-columns: 112px 1fr 34px; align-items: center; gap: 8px; font-size: 14px; }
+  .bar .track { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .bar .fill { height: 100%; background: var(--muted); }
+  .bar.top .fill { background: var(--accent); }
+  .bar .num { font-family: "IBM Plex Mono", monospace; text-align: right; }
+  .code { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--muted); word-break: break-all; margin-top: 12px; }
+  .ok { color: #2f7a3e; }
+  @media (prefers-color-scheme: dark) { .ok { color: #7ccf8b; } }
+  .bad { color: var(--accent); }
+</style>
+</head>
+<body>
+<main class="wrap"><div id="app" class="card"></div></main>
+
+<script>
+"use strict";
+
+const VERSION = "v0.1";
+
+// Домены: код, название для игрока, норма (доля от максимума), описание.
+const TYPES = {
+  na: { name: "Чувствительный", short: "Чувствительность", norm: 0.45,
+        text: "Ты замечаешь то, что другие пропускают: паузу в разговоре, сменившийся тон, неотвеченное сообщение. Ты остро чувствуешь людей и поэтому часто первым понимаешь, что что-то не так. Обратная сторона — ты нередко прокручиваешь в голове худшие варианты и принимаешь чужую холодность на свой счёт. Тебе важно знать, что тебя не оставят. Хорошие дни у тебя бывают очень хорошими, а плохие — тяжёлыми." },
+  ot: { name: "Закрытый", short: "Закрытость", norm: 0.40,
+        text: "Ты скорее наблюдатель, чем участник. Тебе хватает себя, и чужое внимание быстро утомляет. Ты многое замечаешь, но говоришь немногое, а о том, что чувствуешь, — почти никогда. Люди считают тебя спокойным, иногда холодным, хотя внутри у тебя может происходить много всего. Близко к себе ты подпускаешь немногих и медленно, зато надолго." },
+  ds: { name: "Скептик", short: "Скептицизм", norm: 0.30,
+        text: "Ты не веришь словам, ты веришь поступкам. Ты быстро понимаешь, кому что выгодно, и тебя трудно обмануть. Ты умеешь добиваться своего и не стесняешься этого. Обратная сторона — ты редко доверяешь до конца и не любишь признавать, что ошибся. Тебе важно, чтобы с тобой считались. Тёплые чувства у тебя есть, но показываешь ты их редко и не всем." },
+  rs: { name: "Импульсивный", short: "Импульсивность", norm: 0.40,
+        text: "Ты живёшь сейчас. Решения принимаешь быстро, часто раньше, чем успеваешь их обдумать, и это не раз тебя выручало. Тебе скучно там, где всё предсказуемо, и ты легко загораешься новым. Обратная сторона — так же легко ты остываешь, бросаешь начатое и иногда жалеешь о сказанном сгоряча. С тобой интересно, но непросто положиться." },
+  an: { name: "Педант", short: "Педантичность", norm: 0.45,
+        text: "Ты любишь, когда всё на своих местах: вещи, планы, слова. Ты доводишь дело до конца и делаешь его хорошо, на тебя можно положиться. Обратная сторона — тебе трудно, когда планы меняются в последний момент, и ты можешь переделывать одно и то же, пока не станет идеально. Ты замечаешь ошибки, которые другие не видят, и тебе непросто их не исправить." }
+};
+const TYPE_ORDER = ["na", "ot", "ds", "rs", "an"];
+
+// Вопросы в порядке показа. r = обратный вопрос.
+const QUESTIONS = [
+  { id: "НА1", d: "na", t: "Я часто переживаю, что что-то пойдёт не так." },
+  { id: "ОТ1", d: "ot", t: "О своих чувствах я редко рассказываю даже близким." },
+  { id: "ДС1", d: "ds", t: "Большинство людей помогают, только когда им это выгодно." },
+  { id: "РС1", d: "rs", t: "Я часто сначала делаю, а потом думаю." },
+  { id: "АН1", d: "an", t: "Меня раздражает, когда вещь лежит не на своём месте." },
+  { id: "ОТ4", d: "ot", r: true, t: "Я легко схожусь с новыми людьми." },
+  { id: "ДС2", d: "ds", t: "Чтобы добиться своего, иногда можно и приукрасить правду." },
+  { id: "РС3", d: "rs", t: "Ради острых ощущений я готов рискнуть." },
+  { id: "АН4", d: "an", r: true, t: "Я легко меняю планы в последний момент." },
+  { id: "НА4", d: "na", r: true, t: "Критику я обычно воспринимаю спокойно." },
+  { id: "ДС3", d: "ds", t: "Мне важно, чтобы окружающие видели, чего я стою." },
+  { id: "РС4", d: "rs", r: true, t: "Я умею отложить удовольствие ради цели." },
+  { id: "АН5", d: "an", r: true, t: "Небольшой беспорядок меня не беспокоит." },
+  { id: "НА3", d: "na", t: "Моё настроение может несколько раз поменяться за день." },
+  { id: "ОТ5", d: "ot", r: true, t: "Мне нравится, когда вокруг много знакомых." },
+  { id: "РС5", d: "rs", r: true, t: "Я редко поступаю сгоряча." },
+  { id: "АН3", d: "an", t: "Мне спокойнее, когда всё идёт по плану." },
+  { id: "НА2", d: "na", t: "Если мне долго не отвечают на сообщение, я начинаю думать, что сделал что-то не так." },
+  { id: "ОТ2", d: "ot", t: "В компании я скорее наблюдаю, чем участвую." },
+  { id: "ДС5", d: "ds", r: true, t: "Мне легко признать, что я был неправ." },
+  { id: "АН2", d: "an", t: "Я переделываю работу, пока она не станет безупречной." },
+  { id: "НА5", d: "na", r: true, t: "Меня трудно выбить из колеи." },
+  { id: "ОТ3", d: "ot", t: "Мне комфортнее одному, чем с людьми." },
+  { id: "ДС4", d: "ds", r: true, t: "Когда у кого-то беда, мне по-настоящему не всё равно." },
+  { id: "РС2", d: "rs", t: "Я легко бросаю дело, если оно стало скучным." }
+];
+
+// Ответы: значение — «да» = 3 ... «нет» = 0.
+const SCALE = [
+  { v: 3, t: "Да" },
+  { v: 2, t: "Скорее да" },
+  { v: 1, t: "Скорее нет" },
+  { v: 0, t: "Нет" }
+];
+
+const STORY_QS = [
+  { key: "finale", label: "Финал", q: "Какой финал истории тебе ближе?", opts: [
+    ["Искупление", "Искупление: герой исправляет то, что натворил, хоть и дорогой ценой."],
+    ["Трагедия", "Трагедия: герой проигрывает, но это честный и сильный финал."],
+    ["Открытый", "Открытый: история заканчивается, а что дальше — решать тебе."],
+    ["Горько-сладкий", "Горько-сладкий: что-то удалось спасти, что-то потеряно навсегда."],
+    ["Побег", "Побег: герой вырывается из того, что его держало, и уходит."] ] },
+  { key: "hook", label: "Цепляет", q: "Что тебя больше всего цепляет в истории?", opts: [
+    ["Тайна", "Тайна, которую хочется разгадать."],
+    ["Отношения", "Отношения между людьми."],
+    ["Выбор", "Выбор, у которого нет правильного ответа."],
+    ["Выживание", "Опасность и выживание."],
+    ["Перехитрить систему", "Система, которую можно перехитрить."] ] },
+  { key: "hero", label: "Герой", q: "Какой герой интереснее тебе в конце истории?", opts: [
+    ["Изменился", "Тот, кто изменился."],
+    ["Остался собой", "Тот, кто остался собой вопреки всему."],
+    ["Заплатил", "Тот, кто заплатил за свой выбор."] ] },
+  { key: "choice", label: "Выбор в игре", q: "Когда в игре трудный выбор, ты обычно:", opts: [
+    ["Как сам", "Поступаешь так, как поступил бы сам."],
+    ["Как персонаж", "Поступаешь так, как поступил бы персонаж."],
+    ["Что интереснее", "Выбираешь то, что интереснее посмотреть."],
+    ["Пробую всё", "Сохраняешься и пробуешь все варианты."] ] }
+];
+
+const LETTERS = ["А", "Б", "В", "Г", "Д"];
+
+// Состояние
+const S = {
+  answers: new Array(QUESTIONS.length).fill(null),
+  qi: 0,
+  t0: 0,
+  seconds: 0,
+  blindOrder: [],
+  blind1: null,
+  blind2: null,
+  rating: null,
+  story: {},
+  si: 0
+};
+
+const app = document.getElementById("app");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+function shuffle(a) {
+  a = a.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function score() {
+  const sums = { na: 0, ot: 0, ds: 0, rs: 0, an: 0 };
+  QUESTIONS.forEach((q, i) => {
+    const v = S.answers[i];
+    sums[q.d] += q.r ? 3 - v : v;
+  });
+  const dev = TYPE_ORDER.map(d => ({ d, sum: sums[d], dev: sums[d] / 15 - TYPES[d].norm }))
+    .sort((a, b) => b.dev - a.dev);
+  return { sums, ranked: dev, borderline: dev[0].dev - dev[1].dev < 0.03 };
+}
+
+function fmtTime(s) {
+  const m = Math.floor(s / 60), r = s % 60;
+  return m + ":" + String(r).padStart(2, "0");
+}
+
+// --- Экраны ---
+
+function intro() {
+  app.innerHTML = `
+    <p class="tag"><span>Тест ${VERSION}</span><span>≈ 5 минут</span></p>
+    <h1>Какой ты?</h1>
+    <p>25 коротких утверждений о характере. На каждое — «да», «скорее да», «скорее нет» или «нет».</p>
+    <p>Отвечай честно и не думай долго: первый ответ обычно самый точный. Правильных и неправильных ответов нет.</p>
+    <p class="muted small">Время прохождения засекается. Ответы никуда не отправляются и не сохраняются: в конце будет экран, который нужно заскринить и прислать.</p>
+    <button class="btn" id="go">Начать</button>`;
+  document.getElementById("go").onclick = () => {
+    S.t0 = Date.now();
+    window.addEventListener("beforeunload", warn);
+    question();
+  };
+}
+
+function warn(e) { e.preventDefault(); e.returnValue = ""; }
+
+function question() {
+  const q = QUESTIONS[S.qi];
+  const n = QUESTIONS.length;
+  app.innerHTML = `
+    <p class="tag"><span>Вопрос ${S.qi + 1} / ${n}</span><span></span></p>
+    <div class="progress"><div style="width:${(S.qi / n) * 100}%"></div></div>
+    <p class="question">${esc(q.t)}</p>
+    <div class="options">
+      ${SCALE.map(o => `<button class="opt${S.answers[S.qi] === o.v ? " sel" : ""}" data-v="${o.v}">${o.t}</button>`).join("")}
+    </div>
+    <div class="row">
+      ${S.qi > 0 ? `<button class="link" id="back">← Назад</button>` : `<span></span>`}
+      <span></span>
+    </div>`;
+  app.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+    S.answers[S.qi] = Number(b.dataset.v);
+    b.classList.add("sel");
+    setTimeout(() => {
+      if (S.qi < n - 1) { S.qi++; question(); }
+      else {
+        S.seconds = Math.round((Date.now() - S.t0) / 1000);
+        S.blindOrder = shuffle(TYPE_ORDER);
+        blind();
+      }
+    }, 140);
+  });
+  const back = document.getElementById("back");
+  if (back) back.onclick = () => { S.qi--; question(); };
+}
+
+function blind() {
+  const step = S.blind1 === null ? 1 : S.blind2 === null ? 2 : 3;
+  const hint = step === 1 ? "Выбери самое похожее" : step === 2 ? "Теперь второе по похожести" : "Готово. Можно поменять, нажав ещё раз";
+  app.innerHTML = `
+    <p class="tag"><span>Почти всё</span><span>Шаг 1 из 3</span></p>
+    <h2>Какое из этих описаний больше всего похоже на тебя? А какое на втором месте?</h2>
+    <p class="hint">${hint}</p>
+    ${S.blindOrder.map((d, i) => {
+      const cls = d === S.blind1 ? " first" : d === S.blind2 ? " second" : "";
+      const badge = d === S.blind1 ? `<span class="badge">1 место</span>` : d === S.blind2 ? `<span class="badge">2 место</span>` : "";
+      return `<button class="desc${cls}" data-d="${d}"><span class="letter">${LETTERS[i]}</span>${badge}${esc(TYPES[d].text)}</button>`;
+    }).join("")}
+    <button class="btn" id="next" ${step === 3 ? "" : "disabled"}>Показать мой результат</button>`;
+  app.querySelectorAll(".desc").forEach(b => b.onclick = () => {
+    const d = b.dataset.d;
+    if (d === S.blind1) { S.blind1 = S.blind2; S.blind2 = null; }
+    else if (d === S.blind2) { S.blind2 = null; }
+    else if (S.blind1 === null) S.blind1 = d;
+    else if (S.blind2 === null) S.blind2 = d;
+    else S.blind2 = d;
+    const y = window.scrollY;
+    blind();
+    window.scrollTo(0, y);
+  });
+  document.getElementById("next").onclick = () => { window.scrollTo(0, 0); result(); };
+}
+
+function result() {
+  const r = score();
+  const top = r.ranked[0].d;
+  app.innerHTML = `
+    <p class="tag"><span>Твой результат</span><span>Шаг 2 из 3</span></p>
+    ${r.borderline ? `<span class="stamp">Пограничный результат</span>` : ""}
+    <h1>${TYPES[top].name}</h1>
+    <p>${esc(TYPES[top].text)}</p>
+    ${r.borderline ? `<p class="muted small">Почти так же близко: <b>${TYPES[r.ranked[1].d].name}</b>.</p>` : ""}
+    <h2 style="margin-top:24px">Насколько это про тебя?</h2>
+    <div class="scale">
+      ${[1, 2, 3, 4, 5].map(v => `<button class="opt${S.rating === v ? " sel" : ""}" data-v="${v}">${v}</button>`).join("")}
+    </div>
+    <div class="scale-labels"><span>совсем не про меня</span><span>точно про меня</span></div>
+    <button class="btn" id="next" ${S.rating ? "" : "disabled"}>Дальше</button>`;
+  app.querySelectorAll(".scale .opt").forEach(b => b.onclick = () => {
+    S.rating = Number(b.dataset.v);
+    app.querySelectorAll(".scale .opt").forEach(x => x.classList.toggle("sel", x === b));
+    document.getElementById("next").disabled = false;
+  });
+  document.getElementById("next").onclick = () => { S.si = 0; window.scrollTo(0, 0); story(); };
+}
+
+function story() {
+  const sq = STORY_QS[S.si];
+  app.innerHTML = `
+    <p class="tag"><span>Про истории · ${S.si + 1} / ${STORY_QS.length}</span><span>Шаг 3 из 3</span></p>
+    <h2>${esc(sq.q)}</h2>
+    <div class="options">
+      ${sq.opts.map(([short, long]) => `<button class="opt${S.story[sq.key] === short ? " sel" : ""}" data-v="${esc(short)}">${esc(long)}</button>`).join("")}
+    </div>
+    <div class="row">
+      ${S.si > 0 ? `<button class="link" id="back">← Назад</button>` : `<span></span>`}
+      <button class="link" id="skip">${S.si === 0 ? "Пропустить все" : "Пропустить"}</button>
+    </div>`;
+  const nextQ = () => {
+    if (S.si < STORY_QS.length - 1) { S.si++; story(); } else final();
+  };
+  app.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+    S.story[sq.key] = b.dataset.v;
+    b.classList.add("sel");
+    setTimeout(nextQ, 140);
+  });
+  document.getElementById("skip").onclick = () => { if (S.si === 0) final(); else nextQ(); };
+  const back = document.getElementById("back");
+  if (back) back.onclick = () => { S.si--; story(); };
+}
+
+function final() {
+  window.removeEventListener("beforeunload", warn);
+  window.scrollTo(0, 0);
+  app.classList.add("final");
+  const r = score();
+  const top = r.ranked[0].d, second = r.ranked[1].d;
+  const inTop2 = top === S.blind1 || top === S.blind2;
+  const blindMark = top === S.blind1 ? "совпало, 1 место" : top === S.blind2 ? "совпало, 2 место" : "не совпало";
+  const code = S.answers.join("");
+  const storyLine = STORY_QS.map(s => `${s.label}: ${esc(S.story[s.key] || "—")}`).join("<br>");
+  app.innerHTML = `
+    <p class="tag"><span>Итог · тест ${VERSION}</span><span>${new Date().toLocaleDateString("ru-RU")}</span></p>
+    ${r.borderline ? `<span class="stamp">Пограничный</span>` : ""}
+    <h1>${TYPES[top].name}</h1>
+    <p class="muted small" style="margin:0">Второй тип: ${TYPES[second].name}</p>
+    <dl>
+      <dt>Вслепую</dt>
+      <dd>1. ${TYPES[S.blind1].name}<br>2. ${TYPES[S.blind2].name}<br>
+        <span class="${inTop2 ? "ok" : "bad"}">${blindMark}</span></dd>
+      <dt>Про меня</dt><dd>${S.rating} из 5</dd>
+      <dt>Время</dt><dd class="mono">${fmtTime(S.seconds)}</dd>
+      <dt>Истории</dt><dd>${storyLine}</dd>
+    </dl>
+    <div class="bars">
+      ${TYPE_ORDER.map(d => `
+        <div class="bar${d === top ? " top" : ""}">
+          <span>${TYPES[d].short}</span>
+          <span class="track"><span class="fill" style="display:block;width:${(r.sums[d] / 15) * 100}%"></span></span>
+          <span class="num">${r.sums[d]}</span>
+        </div>`).join("")}
+    </div>
+    <p class="code">${VERSION} · ${code}</p>
+    <p style="margin:16px 0 0"><b>Сделай скриншот этого экрана и пришли его мне.</b></p>
+    <button class="link" id="again">Пройти заново</button>`;
+  document.getElementById("again").onclick = () => location.reload();
+}
+
+intro();
+</script>
+</body>
+</html>
